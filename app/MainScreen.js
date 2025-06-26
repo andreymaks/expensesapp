@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import TotalExpenses from "../components/TotalExpenses";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "../components/Buttons/CustomButton";
 
 function MainScreen() {
   const router = useRouter();
