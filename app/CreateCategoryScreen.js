@@ -20,11 +20,13 @@ function CreateCategoryScreen() {
 
   function onSaveHandler() {
     categoriesCtx.addCategory(name, selectedIcon);
+    setName("");
+    setSelectedIcon(null);
     router.back();
   }
 
   function onCancelHandler() {
-    setText("");
+    setName("");
     setSelectedIcon(null);
     router.back();
   }

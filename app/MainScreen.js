@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet } from "react-native";
-import { useState, useContext } from "react";
-import { FontAwesome6 } from "@expo/vector-icons";
+import { View, StyleSheet } from "react-native";
+import { useContext } from "react";
 import { useRouter } from "expo-router";
-import TotalExpenses from "../components/TotalExpenses";
-import CustomButton from "../components/Buttons/CustomButton";
+import EmptyScreen from "../components/MainScreen/EmptyScreen";
+import TotalExpenses from "../components/MainScreen/TotalExpenses";
+import CategoryList from "../components/MainScreen/CategoryList";
+import AddCategoryItem from "../components/MainScreen/AddCategoryItem";
 import { CategoriesContext } from "../contexts/CategoriesContext";
 
 function MainScreen() {
@@ -15,26 +16,14 @@ function MainScreen() {
   }
 
   if (categories.length === 0) {
-    return (
-      <View style={styles.rootContainer}>
-        <TotalExpenses />
-        <View style={styles.iconContainer}>
-          <FontAwesome6 name="ghost" size={192} color="lightgray" />
-        </View>
-        <Text style={styles.text}>No categories yet</Text>
-        <CustomButton onPress={CreateNewCategoryHandler}>
-          Add Category
-        </CustomButton>
-      </View>
-    );
+    return <EmptyScreen CreateNewCategoryHandler={CreateNewCategoryHandler} />;
   }
 
   return (
     <View style={styles.rootContainer}>
       <TotalExpenses />
-      <View>
-        <Text style={styles.text}>{categories[0].name}</Text>
-      </View>
+      <AddCategoryItem CreateNewCategoryHandler={CreateNewCategoryHandler} />
+      <CategoryList />
     </View>
   );
 }
@@ -44,13 +33,5 @@ export default MainScreen;
 const styles = StyleSheet.create({
   rootContainer: {
     alignItems: "center",
-  },
-  iconContainer: {
-    marginTop: 64,
-    marginBottom: 16,
-  },
-  text: {
-    color: "white",
-    fontSize: 28,
   },
 });
