@@ -9,7 +9,18 @@ export const CategoriesContext = createContext({
 });
 
 function CategoriesContextProvider({ children }) {
-  const [categories, setCategories] = useState([]);
+  const dummyCategories = [
+    { id: uuid(), name: "Airplane", icon: "airplane" },
+    { id: uuid(), name: "Shopping", icon: "basket" },
+    { id: uuid(), name: "Transport", icon: "car" },
+    { id: uuid(), name: "Calendar", icon: "calendar" },
+    { id: uuid(), name: "Desktop", icon: "desktop" },
+    { id: uuid(), name: "Football", icon: "football" },
+    { id: uuid(), name: "Gift", icon: "gift" },
+    { id: uuid(), name: "Bag", icon: "bag" },
+  ];
+
+  const [categories, setCategories] = useState(dummyCategories);
 
   function createCategory(name, icon) {
     const category = {

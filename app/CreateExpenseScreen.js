@@ -1,23 +1,40 @@
-import { View, Text, StyleSheet, TextInput, Keyboard } from "react-native";
-import { useContext, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Keyboard,
+  Pressable,
+} from "react-native";
+import { useContext, useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { CategoriesContext } from "../contexts/CategoriesContext";
+import { ChosenCategoryContext } from "../contexts/ChosenCategoryContext";
 import { FontAwesome6 } from "@expo/vector-icons";
 import SaveCancelBar from "../components/Buttons/SaveCancelBar";
 import CategoryIcon from "../components/CategoryIcon";
 import Title from "../components/Title";
 
-const tapOutside = Gesture.Tap()
-  .maxDuration(250)
-  .onEnd(() => Keyboard.dismiss());
-
 function CreateExpenseScreen() {
   const categoriesCtx = useContext(CategoriesContext);
   const categories = categoriesCtx.categories;
-  const category = categories[0];
-  const [isFocused, setFocus] = useState(false);
+  const [isFocused, setFocus] = useState(null);
+  const { chosenCategory, setChosenCategory } = useContext(
+    ChosenCategoryContext
+  );
   const router = useRouter();
+
+  useEffect(() => {
+    if (!chosenCategory && categories.length > 0) {
+      setChosenCategory(categories[0]);
+    }
+  }, [categories]);
+
+  const tapOutside = Gesture.Tap()
+    .maxDuration(250)
+    .enabled(isFocused !== null)
+    .onEnd(() => Keyboard.dismiss());
 
   function onSaveHandler() {
     router.back();
@@ -26,6 +43,12 @@ function CreateExpenseScreen() {
   function onCancelHandler() {
     router.back();
   }
+
+  function chooseCategoryHandler() {
+    console.log("pressed");
+    router.push("/ChooseCategoryScreen");
+  }
+
   return (
     <GestureDetector gesture={tapOutside}>
       <View style={styles.rootContainer}>
@@ -34,29 +57,34 @@ function CreateExpenseScreen() {
           onSaveHandler={onSaveHandler}
         />
         <Title>Add Expense</Title>
-
         <View style={styles.amountInputContainer}>
           <Text style={styles.currencyText}>$</Text>
           <TextInput
             style={styles.amountInput}
             keyboardAppearance="dark"
-            placeholder={isFocused ? "" : "0"}
+            placeholder={isFocused === "amount" ? "" : "0"}
             placeholderTextColor="white"
             keyboardType="decimal-pad"
-            onFocus={() => setFocus(true)}
-            onBlur={() => setFocus(false)}
+            onFocus={() => setFocus("amount")}
+            onBlur={() => setFocus(null)}
           />
         </View>
 
-        <View style={styles.categoryOuterContainer}>
-          <View style={styles.categoryContainer}>
-            <CategoryIcon iconName={category.icon} />
+        <View
+          style={styles.categoryOuterContainer}
+          pointerEvents={isFocused ? "none" : "auto"}
+        >
+          <Pressable
+            onPress={chooseCategoryHandler}
+            style={styles.categoryContainer}
+          >
+            <CategoryIcon iconName={chosenCategory.icon} />
             <Text
               style={styles.categoryName}
               ellipsizeMode="tail"
               numberOfLines={1}
             >
-              {category.name}
+              {chosenCategory.name}
             </Text>
             <FontAwesome6
               style={styles.chevronIcon}
@@ -64,7 +92,7 @@ function CreateExpenseScreen() {
               size={24}
               color="#737373"
             />
-          </View>
+          </Pressable>
         </View>
 
         <View style={styles.noteInputContainer}>
@@ -74,6 +102,8 @@ function CreateExpenseScreen() {
             placeholder="Note (optional)"
             keyboardAppearance="dark"
             placeholderTextColor="#979899"
+            onFocus={() => setFocus("note")}
+            onBlur={() => setFocus(null)}
           />
         </View>
       </View>
