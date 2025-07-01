@@ -2,16 +2,14 @@ import { View, Text, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import CustomButton from "../Buttons/CustomButton";
 
-function EmptyScreen({ CreateNewCategoryHandler }) {
+function EmptyScreen({ CreateCategoryHandler }) {
   return (
     <View style={styles.rootContainer}>
       <View>
         <FontAwesome6 name="ghost" size={192} color="lightgray" />
       </View>
       <Text style={styles.text}>No categories yet</Text>
-      <CustomButton onPress={CreateNewCategoryHandler}>
-        Add Category
-      </CustomButton>
+      <CustomButton onPress={CreateCategoryHandler}>Add Category</CustomButton>
     </View>
   );
 }

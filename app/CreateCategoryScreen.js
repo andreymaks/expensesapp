@@ -2,8 +2,9 @@ import { Text, TextInput, View, StyleSheet, Keyboard } from "react-native";
 import { useState, useContext } from "react";
 import { useRouter } from "expo-router";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import TabButton from "../components/Buttons/TabButton";
+import SaveCancelBar from "../components/Buttons/SaveCancelBar";
 import IconList from "../components/IconList/IconList";
+import Title from "../components/Title";
 import { CategoriesContext } from "../contexts/CategoriesContext";
 
 const tapOutside = Gesture.Tap()
@@ -13,6 +14,7 @@ const tapOutside = Gesture.Tap()
 function CreateCategoryScreen() {
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [name, setName] = useState("");
+  const canSave = name.trim() !== "" && selectedIcon !== null;
 
   const categoriesCtx = useContext(CategoriesContext);
 
@@ -34,11 +36,12 @@ function CreateCategoryScreen() {
   return (
     <GestureDetector gesture={tapOutside}>
       <View style={styles.rootContainer}>
-        <View style={styles.buttonsContainer}>
-          <TabButton onPress={onCancelHandler}>Cancel</TabButton>
-          <TabButton onPress={onSaveHandler}>Save</TabButton>
-        </View>
-        <Text style={styles.title}>Create Category</Text>
+        <SaveCancelBar
+          canSave={canSave}
+          onCancelHandler={onCancelHandler}
+          onSaveHandler={onSaveHandler}
+        />
+        <Title>Create Category</Title>
         <TextInput
           style={styles.textInput}
           keyboardAppearance="dark"
@@ -48,12 +51,10 @@ function CreateCategoryScreen() {
           value={name}
         />
         <Text style={styles.subtitle}>Icon</Text>
-        <View style={styles.listContainer}>
-          <IconList
-            selectedIcon={selectedIcon}
-            setSelectedIcon={setSelectedIcon}
-          />
-        </View>
+        <IconList
+          selectedIcon={selectedIcon}
+          setSelectedIcon={setSelectedIcon}
+        />
       </View>
     </GestureDetector>
   );
@@ -64,12 +65,6 @@ export default CreateCategoryScreen;
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-  },
-  title: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 32,
-    marginVertical: 12,
   },
   subtitle: {
     color: "white",
@@ -86,14 +81,5 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     color: "white",
     fontSize: 20,
-  },
-  buttonsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginHorizontal: 12,
-  },
-  listContainer: {
-    flex: 1,
-    alignItems: "center",
   },
 });

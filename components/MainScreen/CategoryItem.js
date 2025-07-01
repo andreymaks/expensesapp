@@ -12,7 +12,7 @@ function CategoryItem({ category }) {
       >
         {category.name}
       </Text>
-      <Text style={[styles.text, styles.amount]}>${category.spent}</Text>
+      <Text style={[styles.text, styles.amount]}>$0</Text>
     </View>
   );
 }
@@ -22,9 +22,9 @@ export default CategoryItem;
 const styles = StyleSheet.create({
   categoryContainer: {
     flexDirection: "row",
-    backgroundColor: "#30302f",
+    backgroundColor: "#212224",
     borderWidth: 2,
-    borderColor: "#30302f",
+    backgroundColor: "#212224",
     borderRadius: 16,
     paddingVertical: 16,
     paddingHorizontal: 8,

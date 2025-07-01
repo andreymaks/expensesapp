@@ -1,19 +1,22 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 
-function TabButton({ onPress, children }) {
+function BarButton({ onPress, children, isDisabled = false }) {
   return (
     <View style={styles.buttonContainer}>
       <Pressable
-        style={({ pressed }) => (pressed ? styles.pressed : null)}
+        disabled={isDisabled}
+        style={({ pressed, disabled }) => (pressed ? styles.pressed : null)}
         onPress={onPress}
       >
-        <Text style={styles.text}>{children}</Text>
+        <Text style={[styles.text, isDisabled && styles.disabled]}>
+          {children}
+        </Text>
       </Pressable>
     </View>
   );
 }
 
-export default TabButton;
+export default BarButton;
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -25,5 +28,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     color: "dodgerblue",
+  },
+  disabled: {
+    color: "grey",
   },
 });

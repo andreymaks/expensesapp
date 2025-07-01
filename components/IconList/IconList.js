@@ -32,17 +32,24 @@ function IconList({ selectedIcon, setSelectedIcon }) {
   );
 
   return (
-    <FlatList
-      data={ICONS}
-      extraData={selectedIcon}
-      key={numColumns}
-      keyExtractor={(item) => item}
-      numColumns={numColumns}
-      renderItem={renderItem}
-    />
+    <View style={styles.listContainer}>
+      <FlatList
+        data={ICONS}
+        extraData={selectedIcon}
+        key={numColumns}
+        keyExtractor={(item) => item}
+        numColumns={numColumns}
+        renderItem={renderItem}
+      />
+    </View>
   );
 }
 
 export default IconList;
 
-// const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  listContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+});

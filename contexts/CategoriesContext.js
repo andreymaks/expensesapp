@@ -16,7 +16,6 @@ function CategoriesContextProvider({ children }) {
       id: uuid(),
       name: name,
       icon: icon,
-      spent: 0,
     };
 
     return category;
