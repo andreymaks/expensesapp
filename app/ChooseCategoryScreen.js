@@ -1,19 +1,21 @@
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
-import { useContext } from "react";
-import { CategoriesContext } from "../contexts/CategoriesContext";
+import { useContext, useState } from "react";
 import { ChosenCategoryContext } from "../contexts/ChosenCategoryContext";
-import SaveCancelBar from "../components/Buttons/SaveCancelBar";
-import Title from "../components/Title";
-import ChooseCategoryItem from "../components/ChooseCategoryList/ChooseCategoryItem";
+import SaveCancelBar from "../components/UI/SaveCancelBar";
+import Title from "../components/UI/Title";
 import ChooseCategoryList from "../components/ChooseCategoryList/ChooseCategoryList";
 
 function ChooseCategoryScreen() {
   const { chosenCategory, setChosenCategory } = useContext(
     ChosenCategoryContext
   );
+
+  const [newCategory, setNewCategory] = useState(chosenCategory);
+
   const router = useRouter();
   function onSaveHandler() {
+    setChosenCategory(newCategory);
     router.back();
   }
 
@@ -27,9 +29,7 @@ function ChooseCategoryScreen() {
         onSaveHandler={onSaveHandler}
       />
       <Title>Choose Category</Title>
-      <ChooseCategoryList
-        renderItem={({ item }) => <ChooseCategoryItem category={item} />}
-      />
+      <ChooseCategoryList newCategory={newCategory} onSelect={setNewCategory} />
     </View>
   );
 }

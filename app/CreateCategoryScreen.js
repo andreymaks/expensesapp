@@ -2,9 +2,9 @@ import { Text, TextInput, View, StyleSheet, Keyboard } from "react-native";
 import { useState, useContext } from "react";
 import { useRouter } from "expo-router";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import SaveCancelBar from "../components/Buttons/SaveCancelBar";
+import SaveCancelBar from "../components/UI/SaveCancelBar";
 import IconList from "../components/IconList/IconList";
-import Title from "../components/Title";
+import Title from "../components/UI/Title";
 import { CategoriesContext } from "../contexts/CategoriesContext";
 
 const tapOutside = Gesture.Tap()

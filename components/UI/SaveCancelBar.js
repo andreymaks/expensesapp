@@ -1,5 +1,5 @@
 import { View, StyleSheet } from "react-native";
-import BarButton from "./BarButton";
+import BarButton from "../Buttons/BarButton";
 
 function SaveCancelBar({ canSave = true, onCancelHandler, onSaveHandler }) {
   return (

@@ -1,25 +1,20 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Keyboard,
-  Pressable,
-} from "react-native";
+import { View, StyleSheet, Keyboard } from "react-native";
 import { useContext, useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { CategoriesContext } from "../contexts/CategoriesContext";
 import { ChosenCategoryContext } from "../contexts/ChosenCategoryContext";
-import { FontAwesome6 } from "@expo/vector-icons";
-import SaveCancelBar from "../components/Buttons/SaveCancelBar";
-import CategoryIcon from "../components/CategoryIcon";
-import Title from "../components/Title";
+import AmountInput from "../components/CreateExpenseScreen/AmountInput";
+import SaveCancelBar from "../components/UI/SaveCancelBar";
+import LoadingScreen from "../components/UI/LoadingScreen";
+import Title from "../components/UI/Title";
+import NoteInput from "../components/CreateExpenseScreen/NoteInput";
+import ChosenCategoryContainer from "../components/CreateExpenseScreen/ChosenCategoryContainer";
 
 function CreateExpenseScreen() {
   const categoriesCtx = useContext(CategoriesContext);
   const categories = categoriesCtx.categories;
-  const [isFocused, setFocus] = useState(null);
+  const [isFocused, setIsFocused] = useState(null);
   const { chosenCategory, setChosenCategory } = useContext(
     ChosenCategoryContext
   );
@@ -45,8 +40,11 @@ function CreateExpenseScreen() {
   }
 
   function chooseCategoryHandler() {
-    console.log("pressed");
     router.push("/ChooseCategoryScreen");
+  }
+
+  if (!chosenCategory) {
+    return <LoadingScreen onCancel={onCancelHandler} onSave={onSaveHandler} />;
   }
 
   return (
@@ -57,55 +55,15 @@ function CreateExpenseScreen() {
           onSaveHandler={onSaveHandler}
         />
         <Title>Add Expense</Title>
-        <View style={styles.amountInputContainer}>
-          <Text style={styles.currencyText}>$</Text>
-          <TextInput
-            style={styles.amountInput}
-            keyboardAppearance="dark"
-            placeholder={isFocused === "amount" ? "" : "0"}
-            placeholderTextColor="white"
-            keyboardType="decimal-pad"
-            onFocus={() => setFocus("amount")}
-            onBlur={() => setFocus(null)}
-          />
-        </View>
+        <AmountInput setIsFocused={setIsFocused} isFocused={isFocused} />
 
-        <View
-          style={styles.categoryOuterContainer}
-          pointerEvents={isFocused ? "none" : "auto"}
-        >
-          <Pressable
-            onPress={chooseCategoryHandler}
-            style={styles.categoryContainer}
-          >
-            <CategoryIcon iconName={chosenCategory.icon} />
-            <Text
-              style={styles.categoryName}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-            >
-              {chosenCategory.name}
-            </Text>
-            <FontAwesome6
-              style={styles.chevronIcon}
-              name="chevron-right"
-              size={24}
-              color="#737373"
-            />
-          </Pressable>
-        </View>
+        <ChosenCategoryContainer
+          isFocused={isFocused}
+          chooseCategoryHandler={chooseCategoryHandler}
+          chosenCategory={chosenCategory}
+        />
 
-        <View style={styles.noteInputContainer}>
-          <TextInput
-            multiline
-            style={styles.noteInput}
-            placeholder="Note (optional)"
-            keyboardAppearance="dark"
-            placeholderTextColor="#979899"
-            onFocus={() => setFocus("note")}
-            onBlur={() => setFocus(null)}
-          />
-        </View>
+        <NoteInput setIsFocused={setIsFocused} />
       </View>
     </GestureDetector>
   );
@@ -116,61 +74,5 @@ export default CreateExpenseScreen;
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-  },
-  amountInputContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  currencyText: {
-    fontSize: 50,
-    color: "white",
-  },
-  amountInput: {
-    marginVertical: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 8,
-    borderRadius: 12,
-    color: "white",
-    fontSize: 50,
-  },
-  noteInputContainer: {
-    alignItems: "center",
-    flex: 1,
-  },
-  noteInput: {
-    width: "90%",
-    height: "20%",
-    paddingVertical: 12,
-    paddingHorizontal: 8,
-    marginVertical: 12,
-    backgroundColor: "#212224",
-    borderRadius: 12,
-    color: "white",
-    textAlign: "left",
-    fontSize: 16,
-  },
-
-  categoryOuterContainer: {
-    alignItems: "center",
-    marginVertical: 12,
-  },
-  categoryContainer: {
-    flexDirection: "row",
-    backgroundColor: "#212224",
-    borderRadius: 16,
-    paddingVertical: 16,
-    paddingHorizontal: 8,
-    width: "90%",
-  },
-  categoryName: {
-    color: "white",
-    fontSize: 20,
-    flexShrink: 1,
-    marginHorizontal: 8,
-  },
-  chevronIcon: {
-    marginLeft: "auto",
-    marginRight: 4,
   },
 });

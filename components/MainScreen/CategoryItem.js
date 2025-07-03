@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
-import CategoryIcon from "../CategoryIcon";
+import CategoryIcon from "../UI/CategoryIcon";
 
 function CategoryItem({ category }) {
   return (
