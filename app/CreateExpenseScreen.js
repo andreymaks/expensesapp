@@ -15,6 +15,9 @@ function CreateExpenseScreen() {
   const categoriesCtx = useContext(CategoriesContext);
   const categories = categoriesCtx.categories;
   const [isFocused, setIsFocused] = useState(null);
+  const [amount, setAmount] = useState("");
+  const canSave = !!amount && parseFloat(amount) !== 0;
+
   const { chosenCategory, setChosenCategory } = useContext(
     ChosenCategoryContext
   );
@@ -51,11 +54,17 @@ function CreateExpenseScreen() {
     <GestureDetector gesture={tapOutside}>
       <View style={styles.rootContainer}>
         <SaveCancelBar
+          canSave={canSave}
           onCancelHandler={onCancelHandler}
           onSaveHandler={onSaveHandler}
         />
         <Title>Add Expense</Title>
-        <AmountInput setIsFocused={setIsFocused} isFocused={isFocused} />
+        <AmountInput
+          setIsFocused={setIsFocused}
+          isFocused={isFocused}
+          amount={amount}
+          setAmount={setAmount}
+        />
 
         <ChosenCategoryContainer
           isFocused={isFocused}

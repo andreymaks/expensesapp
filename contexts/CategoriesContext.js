@@ -21,6 +21,7 @@ function CategoriesContextProvider({ children }) {
   ];
 
   const [categories, setCategories] = useState(dummyCategories);
+  // const [categories, setCategories] = useState([]);
 
   function createCategory(name, icon) {
     const category = {

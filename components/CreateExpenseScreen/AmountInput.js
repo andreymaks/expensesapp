@@ -1,19 +1,38 @@
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
+import { useState, useRef } from "react";
 
-function AmountInput({ setIsFocused, isFocused }) {
+function AmountInput({ setIsFocused, isFocused, amount, setAmount }) {
+  const inputRef = useRef(null);
+
+  function onChangeAmount(text) {
+    const dotText = text.replace(",", ".");
+    const regex = /^\d*(\.)?\d{0,2}$/;
+    if (regex.test(dotText)) {
+      setAmount(dotText);
+    }
+  }
+
   return (
-    <View style={styles.amountInputContainer}>
+    <Pressable
+      onPress={() => inputRef.current?.focus()}
+      style={styles.amountInputContainer}
+    >
       <Text style={styles.currencyText}>$</Text>
+      <Text style={styles.currencyText}>
+        {amount || (isFocused === "amount" ? "" : "00.00")}
+      </Text>
       <TextInput
-        style={styles.amountInput}
+        ref={inputRef}
+        style={styles.amountHiddenInput}
         keyboardAppearance="dark"
-        placeholder={isFocused === "amount" ? "" : "0"}
-        placeholderTextColor="white"
         keyboardType="decimal-pad"
         onFocus={() => setIsFocused("amount")}
         onBlur={() => setIsFocused(null)}
+        onChangeText={onChangeAmount}
+        value={amount}
+        caretHidden
       />
-    </View>
+    </Pressable>
   );
 }
 
@@ -28,13 +47,12 @@ const styles = StyleSheet.create({
   currencyText: {
     fontSize: 50,
     color: "white",
-  },
-  amountInput: {
-    marginVertical: 12,
     paddingVertical: 12,
-    paddingHorizontal: 8,
-    borderRadius: 12,
-    color: "white",
-    fontSize: 50,
+    paddingHorizontal: 4,
+  },
+  amountHiddenInput: {
+    ...StyleSheet.absoluteFillObject,
+    color: "transparent",
+    backgroundColor: "transparent",
   },
 });

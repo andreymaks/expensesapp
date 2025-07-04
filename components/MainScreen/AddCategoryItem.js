@@ -4,7 +4,10 @@ import { FontAwesome6 } from "@expo/vector-icons";
 function AddCategoryItem({ CreateNewCategoryHandler }) {
   return (
     <Pressable
-      style={styles.addCategoryContainer}
+      style={({ pressed }) => [
+        styles.addCategoryContainer,
+        pressed && styles.pressed,
+      ]}
       onPress={CreateNewCategoryHandler}
     >
       <View style={styles.iconContainer}>
@@ -41,5 +44,9 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     marginHorizontal: 8,
+  },
+  pressed: {
+    backgroundColor: "rgba(255,255,255,0.25)",
+    borderColor: "transparent",
   },
 });

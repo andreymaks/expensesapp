@@ -5,7 +5,7 @@ export const ChosenCategoryContext = createContext({
   setChosenCategory: () => {},
 });
 
-function ChosenCategoryProvider({ children }) {
+function ChosenCategoryContextProvider({ children }) {
   const [chosenCategory, setChosenCategory] = useState(null);
 
   return (
@@ -17,4 +17,4 @@ function ChosenCategoryProvider({ children }) {
   );
 }
 
-export default ChosenCategoryProvider;
+export default ChosenCategoryContextProvider;

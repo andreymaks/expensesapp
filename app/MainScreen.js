@@ -33,6 +33,7 @@ function MainScreen() {
       <View style={styles.addExpenseButtonContainer}>
         <CustomButton
           style={styles.addExpenseButton}
+          pressedStyle={styles.addExpenseButtonPressed}
           onPress={CreateExpenseHandler}
         >
           <FontAwesome6 name="plus" size={40} color="white" />
@@ -52,6 +53,7 @@ const styles = StyleSheet.create({
   addExpenseButtonContainer: {
     position: "absolute",
     bottom: 0,
+    marginBottom: 16,
   },
   addExpenseButton: {
     width: 80,
@@ -61,5 +63,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     alignItems: "center",
     justifyContent: "center",
+  },
+  addExpenseButtonPressed: {
+    // backgroundColor: "rgba(255,255,255,0.75)",
+    opacity: 1,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
   },
 });
